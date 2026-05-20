@@ -1,6 +1,6 @@
 # UI-Junkyard
 
-A project for me to train my React and Tailwind skills in a fun website that will have alot of random features and functions.
+A project for me to train my React and Tailwind skills and learn TypeScript in a fun website that will have alot of random features and functions.
 
 # React + Vite
 
