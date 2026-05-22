@@ -9,6 +9,7 @@ export default function Todos() {
   };
 
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [error, setError] = useState("");
 
   const [input, setInput] = useState("");
   const [date, setDate] = useState<string>("");
@@ -17,6 +18,7 @@ export default function Todos() {
     <div className="flex justify-center">
       <div className="flex flex-col justify-center">
         Add a Todo Here
+        {error && <p className="text-red-600 text-xl">{error}</p>}
         <label htmlFor="todoName">Todo Name</label>
         <input
           name="todoName"
@@ -36,14 +38,19 @@ export default function Todos() {
         />
         <button
           onClick={() => {
+            if (!input || !date) {
+              return setError("Name & Date cannot be empty.");
+            }
             const todo = {
               id: Date.now(),
               name: input,
               date: date,
               done: false,
             };
+
             setTodos([...todos, todo]);
             setInput("");
+            setError("");
           }}
           className="rounded-lg w-fit border-2 border-gray-700 px-4"
         >
@@ -53,7 +60,7 @@ export default function Todos() {
       <ul>
         Todos List
         {todos.map((t) => (
-          <li key={t.id}>
+          <li key={t.id} className={t.done ? "line-through" : ""}>
             {t.name + " " + t.date + t.done}
             <button
               onClick={() =>
