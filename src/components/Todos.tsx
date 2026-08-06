@@ -61,7 +61,7 @@ export default function Todos() {
         Todos List
         {todos.map((t) => (
           <li key={t.id} className={t.done ? "line-through" : ""}>
-            {t.name + " " + t.date + t.done}
+            {t.name + " " + t.date}
             <button
               onClick={() =>
                 setTodos(
