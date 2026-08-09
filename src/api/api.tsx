@@ -8,13 +8,15 @@ interface WeatherData {
   };
 }
 
+export interface CityResult {
+  name: string;
+  country: string;
+  latitude: number;
+  longitude: number;
+}
+
 interface CityData {
-  results: {
-    name: string;
-    country: string;
-    latitude: number;
-    longitude: number;
-  }[];
+  results: CityResult[];
 }
 
 export function useGeoSearch(search: string) {

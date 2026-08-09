@@ -4,7 +4,7 @@ import Weather from "../components/Weather";
 
 export default function WeatherPage() {
   return (
-    <div>
+    <div className="bg-sky-100 flex flex-col min-h-screen">
       <Navbar />
       <main className="flex justify-center text-4xl font-bold text-orange-400 underline ">
         Weather Page!
