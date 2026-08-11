@@ -6,7 +6,7 @@ const linkClass = ({ isActive }: { isActive: boolean }) =>
 
 export default function Navbar() {
   return (
-    <nav className="flex gap-5 font-bold text-3xl p-4 bg-gray-200">
+    <nav className="flex gap-5 font-bold text-3xl p-4 bg-gray-200 border-b-2 border-b-gray-300">
       <NavLink to="/" className={linkClass}>
         UI Junkyard
       </NavLink>
