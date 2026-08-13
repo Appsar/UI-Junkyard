@@ -2,9 +2,16 @@ import { useEffect, useState } from "react";
 
 interface WeatherData {
   current_weather: {
+    time: string;
     temperature: number;
     windspeed: number;
     weathercode: number;
+  };
+  daily: {
+    time: string[];
+    temperature_2m_max: number[];
+    temperature_2m_min: number[];
+    weathercode: number[];
   };
 }
 
@@ -37,6 +44,9 @@ export function useGeoSearch(search: string) {
         setCity(data);
         setLat(data.results[0].latitude);
         setLong(data.results[0].longitude);
+        if (data.results && data.results.length > 0) {
+          setCity(data);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -47,11 +57,27 @@ export function useGeoSearch(search: string) {
   return { lat, long, city };
 }
 
+// Get coords from *user*
+export function useGeoLocation() {
+  const [long, setLong] = useState(0);
+  const [lat, setLat] = useState(0);
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      setLong(position.coords.longitude);
+      setLat(position.coords.latitude);
+      console.log(position.coords.latitude + " lat");
+      console.log(position.coords.longitude + " long");
+    });
+  }, []);
+
+  return { long, lat };
+}
+
 export function useCurrentWeather(lat: number, long: number) {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&current_weather=true`;
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,weathercode&forecast_days=7&timezone=auto&`;
   useEffect(() => {
     if (lat === 0 && long === 0) return;
     setLoading(true);
@@ -65,6 +91,7 @@ export function useCurrentWeather(lat: number, long: number) {
         setWeather(data);
       } catch (err) {
         if (err instanceof Error) {
+          console.log("catch error:", err);
           setError(err.message);
         } else {
           setError("Unexpected Error has occurred");
@@ -75,20 +102,6 @@ export function useCurrentWeather(lat: number, long: number) {
     }
     FetchData();
   }, [lat, long]);
-  return { weather, loading, error };
+  const resetWeather = () => setWeather(null);
+  return { weather, loading, error, resetWeather };
 }
-
-// Get coords from *user*
-/* export function useGeoLocation() {
-  const [long, setLong] = useState(0);
-  const [lat, setlat] = useState(0);
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setLong(position.coords.longitude);
-      setlat(position.coords.latitude);
-      console.log(position.coords.latitude + " lat");
-      console.log(position.coords.longitude + " long");
-    });
-  }, []);
-  return { long, lat };
-} */
