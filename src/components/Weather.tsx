@@ -4,7 +4,7 @@ import {
   useCurrentWeather,
   useGeoLocation,
   useGeoSearch,
-} from "../api/api";
+} from "../api/WeatherApi";
 
 export default function Weather() {
   const { lat, long } = useGeoLocation();
@@ -63,14 +63,17 @@ export default function Weather() {
       <div className="flex flex-col justify-center items-center text-3xl ">
         <div className="relative">
           <form>
-            <label htmlFor="city-search">Search by city: </label>
+            <label className="font-medium" htmlFor="city-search">
+              Search by city:{" "}
+            </label>
             <input
               id="city-search"
               type="search"
               autoComplete="off"
               name="search"
               value={query}
-              className="border-amber-500 border-2 w-fit"
+              placeholder="Enter city"
+              className="placeholder:p-1.5  border-amber-500 border-3 rounded-xl w-fit focus:border-amber-600 focus:outline-none"
               onChange={(e) => {
                 setQuery(e.target.value);
                 setUseGPS(false);
@@ -81,7 +84,7 @@ export default function Weather() {
               }}
             ></input>
             <button
-              className="border ml-5 "
+              className="border-3 ml-5 rounded-2xl border-amber-500 bg-amber-200 "
               title="Get location from GPS"
               type="button"
               onClick={() => {
@@ -94,13 +97,15 @@ export default function Weather() {
           </form>
           <ul
             className={
-              showDropdown ? "absolute w-full bg-white border" : "hidden"
+              showDropdown
+                ? "absolute w-full bg-white border-3 border-slate-400 rounded-2xl "
+                : "hidden"
             }
           >
             {city?.results &&
               city.results.map((item) => (
                 <li
-                  className="hover:bg-amber-100 border-b-2"
+                  className="hover:bg-blue-300 bg-none hover:rounded-xl p-1 "
                   key={item.longitude}
                   onClick={() => {
                     setSelectedCity(item);
@@ -115,35 +120,39 @@ export default function Weather() {
         </div>
       </div>
 
-      <div className="flex flex-row text-4xl justify-around mt-8">
+      <div className="flex flex-row text-4xl justify-around mt-8 ">
         {loading && <p>Loading...</p>}
         {error && <p>{error}</p>}
 
         {weather && (
-          <ul className="flex flex-col gap-15">
+          <ul className="flex flex-col gap-12 bg-white/70 backdrop-blur-md rounded-3xl p-6 border border-white/60 shadow-sm">
             <h2 className="text-5xl text-blue-500 ">Current Weather Rapport</h2>
             <li>
-              <p>
+              <p className="text-2xl font-bold text-slate-800">
                 {useGPS
                   ? "Current Location 📍 | " +
                     weather.current_weather.time.slice(11)
                   : `${selectedCity?.name}, ${selectedCity?.country} | ${weather.current_weather.time.slice(11)} `}
               </p>
             </li>
-            <li>
+            <li className="text-6xl font-bold text-slate-900">
               {weather?.current_weather.temperature +
                 "°C     " +
                 weatherEmoji[weather.current_weather.weathercode]}
             </li>
-            <li>{"Wind: " + weather?.current_weather.windspeed + " m/s"}</li>
+            <li className="text-2xl font-medium text-slate-700">
+              {"Wind: " + weather?.current_weather.windspeed + " m/s"}
+            </li>
           </ul>
         )}
 
         {weather && (
-          <ul className="flex flex-col gap-6">
+          <ul className="flex flex-col gap-6 bg-white/70 backdrop-blur-md rounded-3xl p-6 border border-white/60 shadow-sm">
             <h2 className="text-5xl text-blue-500">7 Days Forecast</h2>
             {weather.daily.time.map((day, index) => (
-              <li key={day}>{`${day} ${
+              <li
+                key={day}
+              >{`${new Date(day).toLocaleDateString("en-US", { weekday: "short" })} ${
                 weatherEmoji[weather.daily.weathercode[index] ?? "🌡️"]
               } ${weather.daily.temperature_2m_max[index]}°C / ${weather.daily.temperature_2m_min[index]}°C`}</li>
             ))}

@@ -31,12 +31,17 @@ function NavbarDropdown() {
         </svg>
       </button>
       <div
-        className={isOpen ? "absolute w-full left-0 p-2 bg-blue-600" : "hidden"}
+        className={
+          isOpen ? "absolute w-full left-0 p-2 bg-blue-600 z-10" : "hidden"
+        }
       >
         <ul>
           <p className="underline font-black">Applications</p>
           <li className="font-medium">
             <NavLink to="/app/todo">Todo Page</NavLink>
+          </li>
+          <li className="font-medium">
+            <NavLink to="/app/timer">Timer</NavLink>
           </li>
         </ul>
         <ul>
