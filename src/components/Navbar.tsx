@@ -7,7 +7,10 @@ const linkClass = ({ isActive }: { isActive: boolean }) =>
 export default function Navbar() {
   return (
     <nav className="flex gap-5 font-bold text-3xl p-4 bg-gray-200 border-b-2 border-b-gray-300">
-      <NavLink to="/" className={linkClass}>
+      <NavLink
+        to="/"
+        className={`${linkClass} text-indigo-900 font-bold text-shadow-lg hover:text-indigo-950 hover:scale-105 transition-transform duration-200`}
+      >
         UI Junkyard
       </NavLink>
       <NavbarDropdown />
@@ -19,7 +22,10 @@ function NavbarDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div>
-      <button onClick={() => setIsOpen(!isOpen)}>
+      <button
+        className="transition-transform duration-200 hover:scale-105"
+        onClick={() => setIsOpen(!isOpen)}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height="40px"
@@ -32,7 +38,9 @@ function NavbarDropdown() {
       </button>
       <div
         className={
-          isOpen ? "absolute w-full left-0 p-2 bg-blue-600 z-10" : "hidden"
+          isOpen
+            ? "flex justify-evenly absolute w-full left-0 p-2 bg-blue-200 z-10"
+            : "hidden"
         }
       >
         <ul>
@@ -42,6 +50,9 @@ function NavbarDropdown() {
           </li>
           <li className="font-medium">
             <NavLink to="/app/timer">Timer</NavLink>
+          </li>
+          <li className="font-medium">
+            <NavLink to="/app/bmi">BMI Calculator</NavLink>
           </li>
         </ul>
         <ul>

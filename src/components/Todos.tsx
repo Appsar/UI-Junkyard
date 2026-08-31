@@ -15,26 +15,30 @@ export default function Todos() {
   const [date, setDate] = useState<string>("");
 
   return (
-    <div className="flex justify-center">
-      <div className="flex flex-col justify-center">
-        Add a Todo Here
+    <div className="flex flex-col justify-center items-center">
+      <h1 className="mt-6 mb-5 text-4xl font-bold text-green-800">
+        Welcome to the Todo Page!
+      </h1>
+
+      <div className="flex flex-col w-[40%] justify-center">
+        Add a Todo Here!
         {error && <p className="text-red-600 text-xl">{error}</p>}
-        <label htmlFor="todoName">Todo Name</label>
+        <label htmlFor="todoName">Name</label>
         <input
           name="todoName"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Todo Name"
-          className="border"
+          className="border rounded-xl p-1"
         />
-        <label htmlFor="todoDate">Todo Date</label>
+        <label htmlFor="todoDate">Date</label>
         <input
           name="todoDate"
           value={date}
           onChange={(e) => setDate(e.target.value)}
           type="date"
           placeholder="Todo Date"
-          className="border"
+          className="border rounded-xl p-1"
         />
         <button
           onClick={() => {
@@ -52,17 +56,18 @@ export default function Todos() {
             setInput("");
             setError("");
           }}
-          className="rounded-lg w-fit border-2 border-gray-700 px-4"
+          className="mt-5 rounded-lg w-fit border-2 border-gray-700 px-4"
         >
-          Add Todo
+          Add to list
         </button>
       </div>
-      <ul>
-        Todos List
+      <ul className="flex flex-col p-2 mt-10 border-2 rounded-xl  ">
+        Todo List
         {todos.map((t) => (
           <li key={t.id} className={t.done ? "line-through" : ""}>
-            {t.name + " " + t.date}
+            {t.name + "  " + t.date}
             <button
+              className="ml-4"
               onClick={() =>
                 setTodos(
                   todos.map((d) =>
@@ -74,9 +79,10 @@ export default function Todos() {
               Mark as done
             </button>
             <button
+              className="ml-4"
               onClick={() => setTodos(todos.filter((f) => f.id !== t.id))}
             >
-              Remove todo
+              ❌
             </button>
           </li>
         ))}
